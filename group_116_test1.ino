@@ -31,7 +31,7 @@ int countBumper = 0;   // bumper sensor not triggered yet
 int countTJunc = 0;  // count no. of T-junctions encountered
 
 int startTime = 350;   // Time for car to move a bit after start line
-int turn90Time = 500; // Time for car to turn 90 degrees, forward dir pwm: 200, backward dir pwm: 100
+int turn360Time = 500; // Time for car to turn 360 degrees
                       // value TO BE TESTED
 int go30cmTime = 2000;  // TASK15: Time for car to go backwards >= 30cm
                         // value TO BE TESTED
@@ -61,7 +61,7 @@ void setup ()
 // define Car Turning & Moving Functions
 void turnLeft() 
 {
-  analogWrite(pinL_PWM, 100);
+  analogWrite(pinL_PWM, 200);
   analogWrite(pinR_PWM, 200);
   digitalWrite(pinL_DIR, 0);
   digitalWrite(pinR_DIR, 1); 
@@ -70,7 +70,7 @@ void turnLeft()
 void turnRight() 
 {
   analogWrite(pinL_PWM, 200);
-  analogWrite(pinR_PWM, 100);
+  analogWrite(pinR_PWM, 200);
   digitalWrite(pinL_DIR, 1);
   digitalWrite(pinR_DIR, 0);  
 }
@@ -131,42 +131,35 @@ void loop()
       {
         case 0:  // TASK5
           turnLeft();
-          delay(turn90Time);  // turns left 90 degrees
           break;
         case 1:  // TASK6
-          goForward();   
-          delay(startTime);
+          turnRight();
           break;
         case 2:  // TASK7 - enter loop entrance
           turnLeft();
-          delay(turn90Time);
           break;
         case 3:  // TASK7 - leave loop entrance
           goForward();
-          delay(startTime);
           break;
         case 4:  // TASK8
           turnLeft();
-          delay(turn90Time);
           break;
         case 5:  // TASK9
-          goForward();
-          delay(startTime);
+          turnRight();
           break;
         case 6:  // TASK11
           turnLeft();
-          delay(turn90Time);
           break;
         case 7: // TASK12 - 360 degrees turn, then go forward a bit
           turnLeft();
-          delay(turn90Time * 4);
+          delay(turn360Time);
           goForward();
-          delay(startTime);
           break;
         default:
           goForward();
       }
 
+      delay(startTime);  // a bit of delay for turning
       countTJunc += 1;
     }
     
